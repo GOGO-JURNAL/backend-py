@@ -2,13 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 
-def pengabdian():
+def pengabdian(request):
+    id_sinta = request.get("sintaId")
+
     option = webdriver.ChromeOptions()
     option.add_argument('--headless')
     service = Service('./chromedriver')
     driver = webdriver.Chrome(service=service, options=option)
 
-    sintaLink = "https://sinta.kemdikbud.go.id/authors/profile/5973952"
+    sintaLink = f"https://sinta.kemdikbud.go.id/authors/profile/{id_sinta}/?view=services"
     driver.get(sintaLink)
 
     content = driver.page_source
@@ -22,13 +24,11 @@ def pengabdian():
         title = area.find('div', class_='ar-title').get_text()
         publication = area.find('a', class_='ar-pub').get_text()
         year = area.find('a', class_='ar-year').get_text()
-        cited = area.find('a', class_='ar-cited').get_text()
 
         result_temp = {
             'title': title,
             'publication': publication,
             'year': year,
-            'cited': cited,
             'tipe': 'Pengabdian'
         }
         result_list.append(result_temp)

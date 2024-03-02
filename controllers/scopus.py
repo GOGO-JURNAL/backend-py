@@ -1,16 +1,17 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
-import pandas as pd
-import time
 
-def scopus():
+
+def scopus(request):
+    id_sinta = request.get("sintaId")
+
     option = webdriver.ChromeOptions()
     option.add_argument('--headless')
     service = Service('./chromedriver')
     driver = webdriver.Chrome(service=service, options=option)
 
-    sintaLink = "https://sinta.kemdikbud.go.id/authors/profile/5973952"
+    sintaLink = f"https://sinta.kemdikbud.go.id/authors/profile/{id_sinta}"
     driver.get(sintaLink)
 
     content = driver.page_source
@@ -30,7 +31,7 @@ def scopus():
             'publication': publication,
             'year': year,
             'cited': cited,
-            'tipe': 'SCOPUS'
+            'type': 'SCOPUS'
         }
         result_list.append(result_temp)
 

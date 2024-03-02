@@ -2,13 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 
-def penelitian():
+def penelitian(request):
+    id_sinta = request.get("sintaId")
+
     option = webdriver.ChromeOptions()
     option.add_argument('--headless')
     service = Service('./chromedriver')
     driver = webdriver.Chrome(service=service, options=option)
 
-    sinta_link = "https://sinta.kemdikbud.go.id/authors/profile/5973952/?view=researches"
+    sinta_link = f"https://sinta.kemdikbud.go.id/authors/profile/{id_sinta}/?view=researches"
 
     driver.get(sinta_link)
 
@@ -23,7 +25,6 @@ def penelitian():
         title = area.find('div', class_='ar-title').get_text()
         publication = area.find('a', class_='ar-pub').get_text()
         year = area.find('a', class_='ar-year').get_text()
-
 
         result_dict = {
             'Title': title,
